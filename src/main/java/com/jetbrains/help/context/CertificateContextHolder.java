@@ -31,10 +31,10 @@ import java.security.cert.CertificateException;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CertificateContextHolder {
 
-    private static final String ROOT_KEY_FILE_NAME = "certificate/root.key";
-    private static final String PRIVATE_KEY_FILE_NAME = "certificate/private.key";
-    private static final String PUBLIC_KEY_FILE_NAME = "certificate/public.key";
-    private static final String CET_FILE_NAME = "certificate/ca.crt";
+    private static final String ROOT_KEY_FILE_NAME = "external/certificate/root.key";
+    private static final String PRIVATE_KEY_FILE_NAME = "external/certificate/private.key";
+    private static final String PUBLIC_KEY_FILE_NAME = "external/certificate/public.key";
+    private static final String CET_FILE_NAME = "external/certificate/ca.crt";
 
     private static File rootKeyFile;
 
@@ -52,6 +52,7 @@ public class CertificateContextHolder {
                 || !FileTools.fileExists(CET_FILE_NAME)) {
             log.info("certificate context generate loading...");
             generateCertificate();
+            log.info("certificate context generate success!");
         } else {
             privateKeyFile = FileTools.getFileOrCreat(PRIVATE_KEY_FILE_NAME);
             publicKeyFile = FileTools.getFileOrCreat(PUBLIC_KEY_FILE_NAME);
@@ -77,7 +78,7 @@ public class CertificateContextHolder {
         return CertificateContextHolder.crtFile;
     }
 
-    private static void generateCertificate() {
+    public static void generateCertificate() {
         KeyPair keyPair = SecureUtil.generateKeyPair("RSA", 4096);
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();
